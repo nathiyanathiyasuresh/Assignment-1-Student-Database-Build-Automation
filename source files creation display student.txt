@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include "../include/student.h"
+
+void display_students()
+{
+    FILE *fp;
+    Student s;
+
+    fp = fopen(FILE_NAME, "r");
+
+    if (fp == NULL)
+    {
+        printf("No records available\n");
+        return;
+    }
+
+    printf("\n--- Student Records ---\n");
+
+    while (fscanf(fp, "%d %s %f", &s.id, s.name, &s.marks) != EOF)
+    {
+        printf("ID: %d | Name: %s | Marks: %.2f\n",
+               s.id, s.name, s.marks);
+    }
+
+    fclose(fp);
+}

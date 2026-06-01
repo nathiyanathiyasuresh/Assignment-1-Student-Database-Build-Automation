@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+#include "../include/student.h"
+
+void search_student()
+{
+    FILE *fp;
+    Student s;
+    int id, found = 0;
+
+    fp = fopen(FILE_NAME, "r");
+
+    if (fp == NULL)
+    {
+        printf("No records found\n");
+        return;
+    }
+
+    printf("Enter Student ID to search: ");
+    scanf("%d", &id);
+
+    while (fscanf(fp, "%d %s %f", &s.id, s.name, &s.marks) != EOF)
+    {
+        if (s.id == id)
+        {
+            printf("\nRecord Found\n");
+            printf("ID: %d\n", s.id);
+            printf("Name: %s\n", s.name);
+            printf("Marks: %.2f\n", s.marks);
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        printf("Student not found\n");
+    }
+
+    fclose(fp);
+}

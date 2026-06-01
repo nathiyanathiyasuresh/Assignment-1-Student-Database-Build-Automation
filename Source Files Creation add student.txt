@@ -1,0 +1,33 @@
+1. add student
+#include <stdio.h>
+#include "../include/student.h"
+
+void add_student()
+{
+    FILE *fp;
+    Student s;
+
+    fp = fopen(FILE_NAME, "a");
+
+    if (fp == NULL)
+    {
+        printf("File opening error\n");
+        return;
+    }
+
+    printf("Enter ID: ");
+    scanf("%d", &s.id);
+
+    printf("Enter Name: ");
+    scanf("%s", s.name);
+
+    printf("Enter Marks: ");
+    scanf("%f", &s.marks);
+
+    fprintf(fp, "%d %s %.2f\n", s.id, s.name, s.marks);
+
+    fclose(fp);
+
+    printf("Student Added Successfully\n");
+}
+

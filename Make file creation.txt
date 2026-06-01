@@ -1,0 +1,59 @@
+CC = gcc
+
+DEBUG_FLAGS = -g
+RELEASE_FLAGS = -O2
+
+MODE ?= DEBUG
+
+ifeq ($(MODE),DEBUG)
+CFLAGS = $(DEBUG_FLAGS)
+else
+CFLAGS = $(RELEASE_FLAGS)
+endif
+
+CFLAGS += -Iinclude -Wall -MMD
+
+SRC = $(wildcard src/*.c)
+
+COMMON_SRC = src/common.c src/file_ops.c
+
+ADD_SRC = src/add_student.c
+SEARCH_SRC = src/search_student.c
+DISPLAY_SRC = src/display_student.c
+
+COMMON_OBJ = $(patsubst src/%.c,build/%.o,$(COMMON_SRC))
+
+ADD_OBJ = build/add_student.o
+SEARCH_OBJ = build/search_student.o
+DISPLAY_OBJ = build/display_student.o
+
+all: bin/add_student bin/search_student bin/display_student
+
+build/%.o: src/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build/add_main.o: apps/add_main.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build/search_main.o: apps/search_main.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build/display_main.o: apps/display_main.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+bin/add_student: build/add_main.o $(ADD_OBJ) $(COMMON_OBJ)
+	$(CC) $^ -o $@
+
+bin/search_student: build/search_main.o $(SEARCH_OBJ) $(COMMON_OBJ)
+	$(CC) $^ -o $@
+
+bin/display_student: build/display_main.o $(DISPLAY_OBJ) $(COMMON_OBJ)
+	$(CC) $^ -o $@
+
+run:
+	./bin/display_student
+
+clean:
+	rm -f build/*.o build/*.d bin/*
+
+-include build/*.d
